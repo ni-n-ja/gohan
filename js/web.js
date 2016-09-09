@@ -187,16 +187,16 @@ function anime() {
     AnaliserNode2.getByteFrequencyData(frequency2);
     if (frequency2[21] < 160 && frequency2[107] >= 160) {
         category = "ラーメン";
-        document.getElementById("module").innerText = "モジュール:" + category;
+        document.getElementById("module").innerText = "モジュール:" + 🍜;
         $("body").css("background-color", "#d40000");
     } else if (frequency2[21] >= 160 && frequency2[107] <= 160) {
         category = "寿司";
         $("body").css("background-color", "#0055d4");
-        document.getElementById("module").innerText = "モジュール:" + category;
+        document.getElementById("module").innerText = "モジュール:" + 🍣;
     } else if (frequency2[21] >= 160 && frequency2[107] >= 160) {
         category = "居酒屋";
         $("body").css("background-color", "#fcc900");
-        document.getElementById("module").innerText = "モジュール:" + category;
+        document.getElementById("module").innerText = "モジュール:" + 🍶;
     } else {
         category = "";
         $("body").css("background-color", "#a0a0a0");
