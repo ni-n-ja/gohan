@@ -74,10 +74,6 @@ $(document).ready(function() {
             lat = position.coords.latitude;
             lng = position.coords.longitude;
             console.log("lat,lng", lat, lng);
-            console.log("target lat,lng", targetLat, targetLng);
-            document.getElementById("distance").innerText = mLatLon.get(
-                mLatLon.getLatM(lat), mLatLon.getLonM(lng),
-                mLatLon.getLatM(targetLat), mLatLon.getLonM(targetLng)) + "m";
         },
         function() {
             alert("Geolocation Error")
