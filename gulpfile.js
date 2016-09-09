@@ -18,7 +18,11 @@ gulp.task('browser-sync', function() {
     browserSync({
         files: ['js/**/*.js', '**/*.html', 'css/**/*.css'],
         server: {
-            baseDir: "./"
+            baseDir: "./",
+            middleware: function(req, res, next) {
+                res.setHeader('Access-Control-Allow-Origin', '*');
+                next();
+            }
         },
         port: 9001,
         open: false

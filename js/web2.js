@@ -24,19 +24,6 @@ var lat, lng = 0; //緯度経度
 var distance = 0;
 var touchNow = 0;
 
-var req = new XMLHttpRequest();
-req.responseType = 'text';
-var url = 'http://hacku.kinmemodoki.net'
-req.onreadystatechange = function() {
-    if (req.readyState === 4 && req.status === 200) {
-        $("#m1").css('display', 'none');
-        $("#result").css('display', 'block');
-        document.getElementById("name").innerText = req.response;
-        console.log(req.response);
-    }
-};
-
-
 navigator.geolocation.getCurrentPosition(function(position) {
     var lat = position.coords.latitude;
     var lng = position.coords.longitude;
@@ -46,50 +33,6 @@ navigator.geolocation.getCurrentPosition(function(position) {
 });
 
 $(document).ready(function() {
-
-    navigator.getMedia = navigator.getUserMedia ||
-        navigator.webkitGetUserMedia ||
-        navigator.mozGetUserMedia ||
-        navigator.msGetUserMedia;
-    navigator.getMedia({
-        audio: true
-    }, function(stream) {
-        audioContext.destination.channelCount = 2;
-        var source = audioContext.createMediaStreamSource(stream);
-        var oscillator5000 = audioContext.createOscillator();
-        var oscillator10000 = audioContext.createOscillator();
-        var gainNode = audioContext.createGain();
-        var splitterR = audioContext.createChannelSplitter(2);
-        var splitterL = audioContext.createChannelSplitter(2);
-        var merger = audioContext.createChannelMerger(2);
-
-        oscillator5000.type = 'sine';
-        oscillator5000.frequency.value = 1000;
-        oscillator10000.type = 'sine';
-        oscillator10000.frequency.value = 5000;
-
-        gainNode.gain.value = 1;
-
-        oscillator5000.connect(splitterL);
-        oscillator10000.connect(splitterR);
-        splitterR.connect(merger, 0, 0);
-        splitterL.connect(merger, 0, 1);
-        merger.connect(gainNode);
-        //oscillator.connect(gainNode);
-        gainNode.connect(AnaliserNode);
-        AnaliserNode.connect(audioContext.destination);
-        source.connect(AnaliserNode2);
-        oscillator5000.start();
-        oscillator10000.start();
-        /*$(document).click(function(e) {
-            AnaliserNode.getByteFrequencyData(frequency);
-            AnaliserNode2.getByteFrequencyData(frequency2);
-            ratio = Math.max(frequency2[110], frequency2[111], frequency2[112], frequency2[113], frequency2[114], frequency2[115], frequency2[116], frequency2[117], frequency2[118]) /
-                Math.max(frequency2[20], frequency2[21], frequency2[22], frequency2[23], frequency2[24], frequency2[25], frequency2[26], frequency2[27]);
-            console.log(frequency, frequency2, ratio);
-        });*/
-
-    }, function(err) {});
 
     $(".next").click(function(event) {
         console.log("!!!");
@@ -127,17 +70,13 @@ $(document).ready(function() {
                             if (shakeCount < 6) {
                                 //5降り以下ならリセット．
                                 alert("冒険心が足りません！！");
-                                req.open('GET', url, true);
-                                req.send('');
                                 shakeCount = 0;
+                                return;
                             } else {
                                 distance = shakeCount * 50;
                                 alert(shakeCount);
                                 if (shakeCount > 50) distance = 10000;
-                                //location.href = URL + '/result.html' + "?latitude=" + lat + "&longitude=" + lng + "&distance=" + distance + "&azimuth=" + direction + "&category=" + category;
-                                shakeCount = 0;
-                                req.open('GET', url, true);
-                                req.send('');
+                                location.href = URL + "?latitude=" + lat + "&longitude=" + lng + "&distance=" + distance + "&azimuth=" + direction + "&category=" + category;
                             }
                         }
                     });
