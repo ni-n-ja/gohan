@@ -52,7 +52,7 @@ req.onreadystatechange = function() {
             });
         window.addEventListener('deviceorientation', function(event) {
             //direction = event.alpha; // event.alphaで方角の値を取得
-            document.getElementById("connpas").children().css("transform", "rotate(" + aziCalc(lat, lng, targetLat, targetLng) + "deg)");
+            $("#ga").css("transform", "rotate(" + aziCalc(lat, lng, targetLat, targetLng) + "deg)");
             navigator.geolocation.getCurrentPosition(function(position) {
                     lat = position.coords.latitude;
                     lng = position.coords.longitude;
