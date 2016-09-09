@@ -26,7 +26,8 @@ var touchNow = 0;
 
 var req = new XMLHttpRequest();
 req.responseType = 'text';
-var url = 'http://hacku.kinmemodoki.net'
+//var url = 'http://hacku.kinmemodoki.net'
+var url = 'https://gnavi-rest-kinmemodoki.c9users.io/?_c9_id=livepreview0&_c9_host=https://ide.c9.io';
 req.onreadystatechange = function() {
     if (req.readyState === 4 && req.status === 200) {
         $("#m1").css('display', 'none');
