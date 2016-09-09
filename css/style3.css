@@ -23,3 +23,10 @@
     color: white;
     display: none;
 }
+#connpas {
+    width: auto;
+    height: 30%;
+}
+.con {
+    transform: rotate(0deg);
+}

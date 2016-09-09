@@ -52,12 +52,10 @@ req.onreadystatechange = function() {
             });
         window.addEventListener('deviceorientation', function(event) {
             //direction = event.alpha; // event.alphaで方角の値を取得
-            document.getElementById("connpas").innerText = aziCalc(lat, lng, targetLat, targetLng);
+            document.getElementById("connpas").children().css("transform", "rotate(" + aziCalc(lat, lng, targetLat, targetLng) + "deg)");
             navigator.geolocation.getCurrentPosition(function(position) {
                     lat = position.coords.latitude;
                     lng = position.coords.longitude;
-                    console.log("lat,lng", lat, lng);
-                    console.log("target lat,lng", targetLat, targetLng);
                     document.getElementById("distance").innerText = mLatLon.get(
                         mLatLon.getLatM(lat), mLatLon.getLonM(lng),
                         mLatLon.getLatM(targetLat), mLatLon.getLonM(targetLng)) + "m";
