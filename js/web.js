@@ -141,7 +141,10 @@ $(document).ready(function() {
                             console.log("方位角：", direction);
                             if (shakeCount < 6) {
                                 //5降り以下ならリセット．
-                                alert("冒険心が足りません！！");
+                                //alert("冒険心が足りません！！");
+                                console.log('https://gnavi-rest-kinmemodoki.c9users.io/?' +
+                                    "latitude=" + lat + "&longitude=" + lng + "&distance=" + distance +
+                                    "&azimuth=" + direction + "&category=" + category);
                                 req.open('GET', url, true);
                                 req.send('');
                                 shakeCount = 0;
@@ -150,8 +153,8 @@ $(document).ready(function() {
                                 alert(shakeCount);
                                 if (shakeCount > 50) distance = 10000;
                                 //location.href = URL + '/result.html' + "?latitude=" + lat + "&longitude=" + lng + "&distance=" + distance + "&azimuth=" + direction + "&category=" + category;
-                                url = 'https://gnavi-rest-kinmemodoki.c9users.io/?_c9_id=livepreview0&_c9_host=https://ide.c9.io' +
-                                    "&latitude=" + lat + "&longitude=" + lng + "&distance=" + distance +
+                                url = 'https://gnavi-rest-kinmemodoki.c9users.io/?' +
+                                    "latitude=" + lat + "&longitude=" + lng + "&distance=" + distance +
                                     "&azimuth=" + direction + "&category=" + category;
                                 shakeCount = 0;
                                 req.open('GET', url, true);
