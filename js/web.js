@@ -48,6 +48,10 @@ req.onreadystatechange = function() {
             function() {
                 alert("Geolocation Error")
             });
+        window.addEventListener('deviceorientation', function(event) {
+            //direction = event.alpha; // event.alphaで方角の値を取得
+            document.getElementById("connpas").innerText = aziCalc(lat, lng, targetLat, targetLng);
+        });
     }
 };
 
@@ -190,6 +194,6 @@ function geoDirection(lat1, lng1, lat2, lng2) {
     return dirN0;
 }
 
-function aziCalc(userLat, userLng, shopLat, shopLng, userAzi) {
-    return geoDirection(userLat, userLng, shopLat, shopLng) - userAzi;
+function aziCalc(userLat, userLng, shopLat, shopLng) {
+    return geoDirection(userLat, userLng, shopLat, shopLng) - direction;
 }
