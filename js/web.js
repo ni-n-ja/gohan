@@ -171,14 +171,18 @@ function anime() {
     if (frequency2[21] < 160 && frequency2[107] >= 160) {
         category = "ラーメン";
         document.getElementById("module").innerText = "モジュール:" + category;
+        $("body").css("background-color", "#400000");
     } else if (frequency2[21] >= 160 && frequency2[107] <= 160) {
         category = "すし";
+        $("body").css("background-color", "#0055d4");
         document.getElementById("module").innerText = "モジュール:" + category;
     } else if (frequency2[21] >= 160 && frequency2[107] >= 160) {
         category = "🍺";
+        $("body").css("background-color", "#fcc900");
         document.getElementById("module").innerText = "モジュール:" + category;
     } else {
         category = "";
+        $("body").css("background-color", "#a0a0a0");
         document.getElementById("module").innerText = "モジュール:なし";
     }
     window.requestAnimationFrame(anime);
