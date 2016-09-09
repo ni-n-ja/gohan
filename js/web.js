@@ -54,12 +54,13 @@ req.onreadystatechange = function() {
             direction = event.alpha; // event.alphaで方角の値を取得
             //document.getElementById("connpas").innerText = aziCalc(lat, lng, targetLat, targetLng);
             $("#ga").css("transform", "rotate(" + aziCalc(lat, lng, targetLat, targetLng) + "deg)");
+            aziCalc(lat, lng, targetLat, targetLng)
             navigator.geolocation.getCurrentPosition(function(position) {
                     lat = position.coords.latitude;
                     lng = position.coords.longitude;
                     document.getElementById("distance").innerText = mLatLon.get(
                         mLatLon.getLatM(lat), mLatLon.getLonM(lng),
-                        mLatLon.getLatM(targetLat), mLatLon.getLonM(targetLng)) + "m";
+                        mLatLon.getLatM(targetLat), mLatLon.getLonM(targetLng)) + "m" + " " + aziCalc(lat, lng, targetLat, targetLng);
                 },
                 function() {
                     alert("Geolocation Error")
