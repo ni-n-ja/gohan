@@ -32,15 +32,17 @@ req.onreadystatechange = function() {
     if (req.readyState === 4 && req.status === 200) {
         $("#m1").css('display', 'none');
         $("#result").css('display', 'block');
-        document.getElementById("name").innerText = req.response;
-        console.log(req.response);
+        document.getElementById("name").innerText = JSON.parse(req.response)["data"]["name"];
+        document.getElementById("at").innerText = JSON.parse(req.response)["data"]["address"];
+        document.getElementById("distance").innerText = Math.floor(geom(lat, lng, parseFloat(JSON.parse(req.response)["data"]["latitude"]), parseFloat(JSON.parse(req.response)["data"]["longitude"])) * 1000) + "m";
+        console.log(lat, lng, parseFloat(JSON.parse(req.response)["data"]["latitude"]), parseFloat(JSON.parse(req.response)["data"]["longitude"]));
     }
 };
 
 
 navigator.geolocation.getCurrentPosition(function(position) {
-    var lat = position.coords.latitude;
-    var lng = position.coords.longitude;
+    lat = position.coords.latitude;
+    lng = position.coords.longitude;
     console.log("lat,lng", lat, lng);
 }, function() {
     alert("Geolocation Error")
@@ -82,14 +84,6 @@ $(document).ready(function() {
         source.connect(AnaliserNode2);
         oscillator5000.start();
         oscillator10000.start();
-        /*$(document).click(function(e) {
-            AnaliserNode.getByteFrequencyData(frequency);
-            AnaliserNode2.getByteFrequencyData(frequency2);
-            ratio = Math.max(frequency2[110], frequency2[111], frequency2[112], frequency2[113], frequency2[114], frequency2[115], frequency2[116], frequency2[117], frequency2[118]) /
-                Math.max(frequency2[20], frequency2[21], frequency2[22], frequency2[23], frequency2[24], frequency2[25], frequency2[26], frequency2[27]);
-            console.log(frequency, frequency2, ratio);
-        });*/
-
     }, function(err) {});
 
     $(".next").click(function(event) {
@@ -127,7 +121,7 @@ $(document).ready(function() {
                             console.log("方位角：", direction);
                             if (shakeCount < 6) {
                                 //5降り以下ならリセット．
-                                alert("冒険心が足りません！！");
+                                //alert("冒険心が足りません！！");
                                 req.open('GET', url, true);
                                 req.send('');
                                 shakeCount = 0;
@@ -168,4 +162,15 @@ function anime() {
         document.getElementById("module").innerText = "モジュール:なし";
     }
     window.requestAnimationFrame(anime);
+}
+
+function geom(lat1, lng1, lat2, lng2) {
+    function radians(deg) {
+        return deg * Math.PI / 180;
+    }
+    return 6378.14 * Math.acos(Math.cos(radians(lat1)) *
+        Math.cos(radians(lat2)) *
+        Math.cos(radians(lng2) - radians(lng1)) +
+        Math.sin(radians(lat1)) *
+        Math.sin(radians(lat2)));
 }
