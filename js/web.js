@@ -43,7 +43,9 @@ req.onreadystatechange = function() {
                 lng = position.coords.longitude;
                 console.log("lat,lng", lat, lng);
                 console.log("target lat,lng", targetLat, targetLng);
-                document.getElementById("distance").innerText = geoDistance(lat, lng, targetLat, targetLng);
+                document.getElementById("distance").innerText = mLatLon.get(
+                    mLatLon.getLatM(lat), mLatLon.getLonM(lon),
+                    mLatLon.getLatM(targetLat), mLatLon.getLonM(targetLng)) + "m";
             },
             function() {
                 alert("Geolocation Error")
@@ -170,35 +172,6 @@ function anime() {
     window.requestAnimationFrame(anime);
 }
 
-function geoDistance(lat1, lng1, lat2, lng2) {
-    // 引数　precision は小数点以下の桁数（距離の精度）
-    var distance = 0;
-    var precision = 2;
-    if ((Math.abs(lat1 - lat2) < 0.00001) && (Math.abs(lng1 - lng2) < 0.00001)) {
-        distance = 0;
-    } else {
-        lat1 = lat1 * Math.PI / 180;
-        lng1 = lng1 * Math.PI / 180;
-        lat2 = lat2 * Math.PI / 180;
-        lng2 = lng2 * Math.PI / 180;
-
-        var A = 6378140;
-        var B = 6356755;
-        var F = (A - B) / A;
-
-        var P1 = Math.atan((B / A) * Math.tan(lat1));
-        var P2 = Math.atan((B / A) * Math.tan(lat2));
-
-        var X = Math.acos(Math.sin(P1) * Math.sin(P2) + Math.cos(P1) * Math.cos(P2) * Math.cos(lng1 - lng2));
-        var L = (F / 8) * ((Math.sin(X) - X) * Math.pow((Math.sin(P1) + Math.sin(P2)), 2) / Math.pow(Math.cos(X / 2), 2) - (Math.sin(X) - X) * Math.pow(Math.sin(P1) - Math.sin(P2), 2) / Math.pow(Math.sin(X), 2));
-
-        distance = A * (X + L);
-        var decimal_no = Math.pow(10, precision);
-        distance = Math.round(decimal_no * distance / 1) / decimal_no; // kmに変換するときは(1000で割る)
-    }
-    return distance;
-}
-
 function geoDirection(lat1, lng1, lat2, lng2) {
     // 緯度経度 lat1, lng1 の点を出発として、緯度経度 lat2, lng2 への方位
     // 北を０度で右回りの角度０～３６０度
@@ -215,3 +188,99 @@ function geoDirection(lat1, lng1, lat2, lng2) {
 function aziCalc(userLat, userLng, shopLat, shopLng) {
     return geoDirection(userLat, userLng, shopLat, shopLng) - direction;
 }
+
+(function() {
+
+    // 基本定義.
+    var _u = undefined;
+    var __u = "undefined";
+    var global = (global == _u) ? window : global;
+    var scope = {};
+    global.mLatLon = scope;
+
+    /** 緯度1メートル係数. **/
+    var _latitudeM = 0.000009013374140874493
+
+    /** 経度１メートル係数. **/
+    var _longitudeM = 0.000011003298110363172;
+
+    /**
+     * 緯度をメートル計算.
+     * @param lat 緯度を設定します.
+     * @return int メートル単位に計算された情報が返却されます.
+     */
+    var _getLatM = function(lat) {
+        return (lat / _latitudeM) | 0;
+    }
+
+    /**
+     * 経度をメートル計算.
+     * @param lon 経度を設定します.
+     * @return int メートル単位に計算された情報が返却されます.
+     */
+    var _getLonM = function(lon) {
+        return (lon / _longitudeM) | 0;
+    }
+
+    /**
+     * メートル換算された緯度経度の直線距離を計算.
+     * この処理は、厳密な２点間の緯度経度の距離を求めるものと比べて精度が劣りますが、
+     * 計算速度はビット計算で求めているので、とても高速に動作します.
+     * @param ax 中心位置の緯度(メートル変換されたもの)を設定します.
+     * @param ay 中心位置の経度(メートル変換されたもの)を設定します.
+     * @param bx 対象位置の緯度(メートル変換されたもの)を設定します.
+     * @param by 対象位置の経度(メートル変換されたもの)を設定します.
+     * @return 大まかな直線距離が返却されます.
+     */
+    var _get = function(ax, ay, bx, by) {
+        ax = ax | 0;
+        ay = ay | 0;
+        bx = bx | 0;
+        by = by | 0;
+
+        // 精度はあまり高めでないが、高速で近似値を計算できる.
+        var dx, dy;
+        if ((dx = (ax > bx) ? ax - bx : bx - ax) < (dy = (ay > by) ? ay - by : by - ay)) {
+            return (((dy << 8) + (dy << 3) - (dy << 4) - (dy << 1) +
+                (dx << 7) - (dx << 5) + (dx << 3) - (dx << 1)) >> 8);
+        } else {
+            return (((dx << 8) + (dx << 3) - (dx << 4) - (dx << 1) +
+                (dy << 7) - (dy << 5) + (dy << 3) - (dy << 1)) >> 8);
+        }
+    }
+
+    /**
+     * 緯度経度の直線距離を計算.
+     * @param ax 中心位置の緯度を設定します.
+     * @param ay 中心位置の経度を設定します.
+     * @param bx 対象位置の緯度を設定します.
+     * @param by 対象位置の経度を設定します.
+     * @return 大まかな直線距離が返却されます.
+     */
+    var _getF = function(ax, ay, bx, by) {
+        return _get(
+            _getLatM(ax), _getLonM(ay),
+            _getLatM(bx), _getLonM(by)
+        );
+    }
+
+    scope.getLatM = _getLatM;
+    scope.getLonM = _getLonM;
+    scope.get = _get;
+    scope.getF = _getF;
+
+    /**
+     * 使い方はこんな感じ.
+      mLatLon.get(
+          mLatLon.getLatM( 35.664609 ),mLatLon.getLonM( 139.730985 ), // 六本木駅
+          mLatLon.getLatM( 35.66150837264277 ),mLatLon.getLonM( 139.7295069694519 ) // 六本木ヒルズ
+      )
+      六本木駅から、六本木ヒルズまでの距離
+      384mと出ました.
+      厳密に求める計算では
+      369.13713158509944m
+      多少の誤差はあるけど、大体どれくらい離れたとかを取得する場合は、それほど問題にならないかとｗ
+      大体GPS自体、それほど精度が高くない（スマフォ搭載などは特に）なので。
+     **/
+
+})();
