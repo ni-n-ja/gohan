@@ -127,6 +127,8 @@ $(document).ready(function() {
 });
 
 function anime() {
+    AnaliserNode.getByteFrequencyData(frequency);
+    AnaliserNode2.getByteFrequencyData(frequency2);
     if (frequency2[21] < 160 && frequency2[107] >= 160) {
         category = "ラーメン";
         document.getElementById("module").innerText = "モジュール:" + category;

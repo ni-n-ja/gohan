@@ -6,3 +6,8 @@
 .status {
     margin: 30% auto
 }
+.mi {
+    pointer-events: none;
+    width: 100%;
+    height: auto;
+}
