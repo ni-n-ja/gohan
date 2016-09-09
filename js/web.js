@@ -53,7 +53,7 @@ req.onreadystatechange = function() {
         window.addEventListener('deviceorientation', function(event) {
             direction = event.alpha; // event.alphaで方角の値を取得
             //document.getElementById("connpas").innerText = aziCalc(lat, lng, targetLat, targetLng);
-            $("#ga").css("transform", "rotate(" + aziCalc(lat, lng, targetLat, targetLng) + "deg)");
+            $("#ga").css("transform", "rotate(-" + aziCalc(lat, lng, targetLat, targetLng) + "deg)");
             aziCalc(lat, lng, targetLat, targetLng)
             navigator.geolocation.getCurrentPosition(function(position) {
                     lat = position.coords.latitude;
@@ -202,7 +202,7 @@ function geoDirection(lat1, lng1, lat2, lng2) {
 }
 
 function aziCalc(userLat, userLng, shopLat, shopLng) {
-    return geoDirection(userLat, userLng, shopLat, shopLng) - direction - 90;
+    return geoDirection(userLat, userLng, shopLat, shopLng) - direction;
 }
 
 (function() {
