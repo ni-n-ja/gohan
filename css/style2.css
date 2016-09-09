@@ -1,0 +1,54 @@
+@charset "utf-8";
+#t1, #t2, #t3, #t4, #m1, #m2 {
+    display: none;
+    overflow: hidden;
+    width: 80%;
+    height: 100%;
+    text-align: center;
+    margin: 0 auto 0 auto;
+}
+#t1 {
+    display: block;
+}
+.icon {
+    margin: 20% auto 0 auto;
+    width: auto;
+    height: 35%;
+}
+.iconi {
+    position: relative;
+    width: auto;
+    height: 100%;
+}
+.tmessage {
+    margin: 20% auto 0 auto;
+    width: auto;
+    height: 10%;
+}
+.tmessagei {
+    width: 100%;
+    height: auto;
+}
+.next {
+    margin: 20% auto 0 auto;
+    width: 35%;
+    height: auto;
+}
+.nexti {
+    width: 100%;
+    height: auto;
+}
+.vi {
+    animation: rumble 0.12s linear infinite;
+}
+@keyframes rumble {
+    0% {
+        transform: rotate(0deg) translate(0, 0);
+    }
+    50% {
+        transform: rotate(0deg) translate(0, 20px);
+    }
+    100% {
+        transform: rotate(0deg) translate(0, 0);
+    }
+}
