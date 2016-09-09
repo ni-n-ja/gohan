@@ -23,6 +23,8 @@ var direction = 0; //方位角
 var lat, lng = 0; //緯度経度
 var distance = 0;
 var touchNow = 0;
+var targetLat;
+var targetLng;
 
 var req = new XMLHttpRequest();
 req.responseType = 'text';
@@ -34,22 +36,22 @@ req.onreadystatechange = function() {
         $("#result").css('display', 'block');
         document.getElementById("name").innerText = JSON.parse(req.response)["data"]["name"];
         document.getElementById("at").innerText = JSON.parse(req.response)["data"]["address"];
-        document.getElementById("distance").innerText = Math.floor(geom(lat, lng, parseFloat(JSON.parse(req.response)["data"]["latitude"]), parseFloat(JSON.parse(req.response)["data"]["longitude"])) * 1000) + "m";
-        console.log(lat, lng, parseFloat(JSON.parse(req.response)["data"]["latitude"]), parseFloat(JSON.parse(req.response)["data"]["longitude"]));
+        targetLat = parseFloat(JSON.parse(req.response)["data"]["latitude"]);
+        targetLng = parseFloat(JSON.parse(req.response)["data"]["longitude"]);
+        navigator.geolocation.getCurrentPosition(function(position) {
+                lat = position.coords.latitude;
+                lng = position.coords.longitude;
+                console.log("lat,lng", lat, lng);
+                console.log("target lat,lng", targetLat, targetLng);
+                document.getElementById("distance").innerText = geom(lat, lng, targetLat, targetLng) + " " + lat + " " + lng;
+            },
+            function() {
+                alert("Geolocation Error")
+            });
     }
 };
 
-
-navigator.geolocation.getCurrentPosition(function(position) {
-    lat = position.coords.latitude;
-    lng = position.coords.longitude;
-    console.log("lat,lng", lat, lng);
-}, function() {
-    alert("Geolocation Error")
-});
-
 $(document).ready(function() {
-
     navigator.getMedia = navigator.getUserMedia ||
         navigator.webkitGetUserMedia ||
         navigator.mozGetUserMedia ||
@@ -173,4 +175,21 @@ function geom(lat1, lng1, lat2, lng2) {
         Math.cos(radians(lng2) - radians(lng1)) +
         Math.sin(radians(lat1)) *
         Math.sin(radians(lat2)));
+}
+
+function geoDirection(lat1, lng1, lat2, lng2) {
+    // 緯度経度 lat1, lng1 の点を出発として、緯度経度 lat2, lng2 への方位
+    // 北を０度で右回りの角度０～３６０度
+    var Y = Math.cos(lng2 * Math.PI / 180) * Math.sin(lat2 * Math.PI / 180 - lat1 * Math.PI / 180);
+    var X = Math.cos(lng1 * Math.PI / 180) * Math.sin(lng2 * Math.PI / 180) - Math.sin(lng1 * Math.PI / 180) * Math.cos(lng2 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180 - lat1 * Math.PI / 180);
+    var dirE0 = 180 * Math.atan2(Y, X) / Math.PI; // 東向きが０度の方向
+    if (dirE0 < 0) {
+        dirE0 = dirE0 + 360; //0～360 にする。
+    }
+    var dirN0 = (dirE0 + 90) % 360; //(dirE0+90)÷360の余りを出力 北向きが０度の方向
+    return dirN0;
+}
+
+function aziCalc(userLat, userLng, shopLat, shopLng, userAzi) {
+    return geoDirection(userLat, userLng, shopLat, shopLng) - userAzi;
 }
