@@ -36,8 +36,8 @@ req.onreadystatechange = function() {
         $("#result").css('display', 'block');
         document.getElementById("name").innerText = JSON.parse(req.response)["data"]["name"];
         document.getElementById("at").innerText = JSON.parse(req.response)["data"]["address"];
-        targetLat = parseFloat(JSON.parse(req.response)["data"]["latitude"]);
-        targetLng = parseFloat(JSON.parse(req.response)["data"]["longitude"]);
+        targetLat = JSON.parse(req.response)["data"]["latitude"];
+        targetLng = JSON.parse(req.response)["data"]["longitude"];
         navigator.geolocation.getCurrentPosition(function(position) {
                 lat = position.coords.latitude;
                 lng = position.coords.longitude;
