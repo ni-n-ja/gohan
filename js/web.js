@@ -58,7 +58,7 @@ req.onreadystatechange = function() {
                     lng = position.coords.longitude;
                     document.getElementById("distance").innerText = mLatLon.get(
                         mLatLon.getLatM(lat), mLatLon.getLonM(lng),
-                        mLatLon.getLatM(targetLat), mLatLon.getLonM(targetLng)) + "m";
+                        mLatLon.getLatM(targetLat), mLatLon.getLonM(targetLng)) + "m" + " " + aziCalc(lat, lng, targetLat, targetLng);
                 },
                 function() {
                     alert("Geolocation Error")
