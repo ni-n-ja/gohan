@@ -202,7 +202,7 @@ function geoDirection(lat1, lng1, lat2, lng2) {
 }
 
 function aziCalc(userLat, userLng, shopLat, shopLng) {
-    return -1 * geoDirection(userLat, userLng, shopLat, shopLng) + direction;
+    return -geoDirection(userLat, userLng, shopLat, shopLng) + direction;
 }
 
 (function() {
