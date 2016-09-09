@@ -187,20 +187,27 @@ function anime() {
     AnaliserNode2.getByteFrequencyData(frequency2);
     if (frequency2[21] < 160 && frequency2[107] >= 160) {
         category = "ラーメン";
-        document.getElementById("module").innerText = "モジュール:" + 🍜;
+        document.getElementById("module").innerText = "モジュール:" + "🍜";
+        document.getElementById("moji").innerText = "麺";
+        $("#moji").css("color", "#b90000");
         $("body").css("background-color", "#d40000");
     } else if (frequency2[21] >= 160 && frequency2[107] <= 160) {
         category = "寿司";
         $("body").css("background-color", "#0055d4");
-        document.getElementById("module").innerText = "モジュール:" + 🍣;
+        document.getElementById("module").innerText = "モジュール:" + "🍣";
+        document.getElementById("moji").innerText = "鮨";
+        $("#moji").css("color", "#003e9a");
     } else if (frequency2[21] >= 160 && frequency2[107] >= 160) {
         category = "居酒屋";
         $("body").css("background-color", "#fcc900");
-        document.getElementById("module").innerText = "モジュール:" + 🍶;
+        document.getElementById("module").innerText = "モジュール:" + "🍶";
+        document.getElementById("moji").innerText = "酒";
+        $("#moji").css("color", "#c9a000");
     } else {
         category = "";
         $("body").css("background-color", "#a0a0a0");
         document.getElementById("module").innerText = "モジュール:なし";
+        document.getElementById("moji").innerText = "";
     }
     window.requestAnimationFrame(anime);
 }
