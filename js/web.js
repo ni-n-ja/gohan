@@ -190,11 +190,11 @@ function anime() {
         document.getElementById("module").innerText = "モジュール:" + category;
         $("body").css("background-color", "#400000");
     } else if (frequency2[21] >= 160 && frequency2[107] <= 160) {
-        category = "すし";
+        category = "寿司";
         $("body").css("background-color", "#0055d4");
         document.getElementById("module").innerText = "モジュール:" + category;
     } else if (frequency2[21] >= 160 && frequency2[107] >= 160) {
-        category = "🍺";
+        category = "居酒屋";
         $("body").css("background-color", "#fcc900");
         document.getElementById("module").innerText = "モジュール:" + category;
     } else {
