@@ -12,7 +12,7 @@ function geoDirection(lat1, lng1, lat2, lng2) {
 }
 
 function aziCalc(userLat, userLng, shopLat, shopLng, userAzi) {
-    return geoDirection(userLat, userLng, shopLat, shopLng);
+    return geoDirection(userLat, userLng, shopLat, shopLng) - userAzi;
 }
 
 //ユーザの方位角はdeviceorientationのevent.alphaで取得できる
