@@ -43,7 +43,7 @@ req.onreadystatechange = function() {
                 lng = position.coords.longitude;
                 console.log("lat,lng", lat, lng);
                 console.log("target lat,lng", targetLat, targetLng);
-                document.getElementById("distance").innerText = geom(lat, lng, targetLat, targetLng) + " " + lat + " " + lng;
+                document.getElementById("distance").innerText = geoDistance(lat, lng, targetLat, targetLng);
             },
             function() {
                 alert("Geolocation Error")
@@ -170,15 +170,33 @@ function anime() {
     window.requestAnimationFrame(anime);
 }
 
-function geom(lat1, lng1, lat2, lng2) {
-    function radians(deg) {
-        return deg * Math.PI / 180;
+function geoDistance(lat1, lng1, lat2, lng2) {
+    // 引数　precision は小数点以下の桁数（距離の精度）
+    var distance = 0;
+    var precision = 2;
+    if ((Math.abs(lat1 - lat2) < 0.00001) && (Math.abs(lng1 - lng2) < 0.00001)) {
+        distance = 0;
+    } else {
+        lat1 = lat1 * Math.PI / 180;
+        lng1 = lng1 * Math.PI / 180;
+        lat2 = lat2 * Math.PI / 180;
+        lng2 = lng2 * Math.PI / 180;
+
+        var A = 6378140;
+        var B = 6356755;
+        var F = (A - B) / A;
+
+        var P1 = Math.atan((B / A) * Math.tan(lat1));
+        var P2 = Math.atan((B / A) * Math.tan(lat2));
+
+        var X = Math.acos(Math.sin(P1) * Math.sin(P2) + Math.cos(P1) * Math.cos(P2) * Math.cos(lng1 - lng2));
+        var L = (F / 8) * ((Math.sin(X) - X) * Math.pow((Math.sin(P1) + Math.sin(P2)), 2) / Math.pow(Math.cos(X / 2), 2) - (Math.sin(X) - X) * Math.pow(Math.sin(P1) - Math.sin(P2), 2) / Math.pow(Math.sin(X), 2));
+
+        distance = A * (X + L);
+        var decimal_no = Math.pow(10, precision);
+        distance = Math.round(decimal_no * distance / 1) / decimal_no; // kmに変換するときは(1000で割る)
     }
-    return 6378.14 * Math.acos(Math.cos(radians(lat1)) *
-        Math.cos(radians(lat2)) *
-        Math.cos(radians(lng2) - radians(lng1)) +
-        Math.sin(radians(lat1)) *
-        Math.sin(radians(lat2)));
+    return distance;
 }
 
 function geoDirection(lat1, lng1, lat2, lng2) {
