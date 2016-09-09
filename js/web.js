@@ -150,6 +150,9 @@ $(document).ready(function() {
                                 alert(shakeCount);
                                 if (shakeCount > 50) distance = 10000;
                                 //location.href = URL + '/result.html' + "?latitude=" + lat + "&longitude=" + lng + "&distance=" + distance + "&azimuth=" + direction + "&category=" + category;
+                                url = 'https://gnavi-rest-kinmemodoki.c9users.io/?_c9_id=livepreview0&_c9_host=https://ide.c9.io' +
+                                    "&latitude=" + lat + "&longitude=" + lng + "&distance=" + distance +
+                                    "&azimuth=" + direction + "&category=" + category;
                                 shakeCount = 0;
                                 req.open('GET', url, true);
                                 req.send('');
