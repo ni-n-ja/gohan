@@ -70,6 +70,18 @@ req.onreadystatechange = function() {
 };
 
 $(document).ready(function() {
+    navigator.geolocation.getCurrentPosition(function(position) {
+            lat = position.coords.latitude;
+            lng = position.coords.longitude;
+            console.log("lat,lng", lat, lng);
+            console.log("target lat,lng", targetLat, targetLng);
+            document.getElementById("distance").innerText = mLatLon.get(
+                mLatLon.getLatM(lat), mLatLon.getLonM(lng),
+                mLatLon.getLatM(targetLat), mLatLon.getLonM(targetLng)) + "m";
+        },
+        function() {
+            alert("Geolocation Error")
+        });
     navigator.getMedia = navigator.getUserMedia ||
         navigator.webkitGetUserMedia ||
         navigator.mozGetUserMedia ||
