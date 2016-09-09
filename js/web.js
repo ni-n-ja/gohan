@@ -141,7 +141,7 @@ $(document).ready(function() {
                             console.log("方位角：", direction);
                             if (shakeCount < 6) {
                                 //5降り以下ならリセット．
-                                //alert("冒険心が足りません！！");
+                                alert("冒険心が足りません！！");
                                 req.open('GET', url, true);
                                 req.send('');
                                 shakeCount = 0;
