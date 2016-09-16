@@ -32,10 +32,14 @@ req.responseType = 'text';
 var url = 'https://gnavi-rest-kinmemodoki.c9users.io/?_c9_id=livepreview0&_c9_host=https://ide.c9.io';
 req.onreadystatechange = function() {
     if (req.readyState === 4 && req.status === 200) {
-        $("#m1").css('display', 'none');
-        $("#result").css('display', 'block');
-        document.getElementById("name").innerText = JSON.parse(req.response)["data"]["name"];
-        document.getElementById("at").innerText = JSON.parse(req.response)["data"]["address"];
+        $("#m1")
+            .css('display', 'none');
+        $("#result")
+            .css('display', 'block');
+        document.getElementById("name")
+            .innerText = JSON.parse(req.response)["data"]["name"];
+        document.getElementById("at")
+            .innerText = JSON.parse(req.response)["data"]["address"];
         targetLat = JSON.parse(req.response)["data"]["latitude"];
         targetLng = JSON.parse(req.response)["data"]["longitude"];
         navigator.geolocation.getCurrentPosition(function(position) {
@@ -43,9 +47,10 @@ req.onreadystatechange = function() {
                 lng = position.coords.longitude;
                 console.log("lat,lng", lat, lng);
                 console.log("target lat,lng", targetLat, targetLng);
-                document.getElementById("distance").innerText = mLatLon.get(
-                    mLatLon.getLatM(lat), mLatLon.getLonM(lng),
-                    mLatLon.getLatM(targetLat), mLatLon.getLonM(targetLng)) + "m";
+                document.getElementById("distance")
+                    .innerText = mLatLon.get(
+                        mLatLon.getLatM(lat), mLatLon.getLonM(lng),
+                        mLatLon.getLatM(targetLat), mLatLon.getLonM(targetLng)) + "m";
             },
             function() {
                 alert("Geolocation Error")
@@ -53,14 +58,68 @@ req.onreadystatechange = function() {
         window.addEventListener('deviceorientation', function(event) {
             direction = event.alpha; // event.alphaで方角の値を取得
             //document.getElementById("connpas").innerText = aziCalc(lat, lng, targetLat, targetLng);
-            $("#ga").css("transform", "rotate(" + aziCalc(lat, lng, targetLat, targetLng) + "deg)");
+            $("#ga")
+                .css("transform", "rotate(" + aziCalc(lat, lng, targetLat, targetLng) + "deg)");
             aziCalc(lat, lng, targetLat, targetLng)
             navigator.geolocation.getCurrentPosition(function(position) {
                     lat = position.coords.latitude;
                     lng = position.coords.longitude;
-                    document.getElementById("distance").innerText = mLatLon.get(
+                    document.getElementById("distance")
+                        .innerText = mLatLon.get(
+                            mLatLon.getLatM(lat), mLatLon.getLonM(lng),
+                            mLatLon.getLatM(targetLat), mLatLon.getLonM(targetLng)) + "m";
+                },
+                function() {
+                    alert("Geolocation Error")
+                });
+        });
+    } else {
+        var onerr = {
+            "errorCode": 0,
+            "data": {
+                "name": "食神 餃子王",
+                "address": "〒182-0026 東京都調布市小島町1-5-1",
+                "url": "http://r.gnavi.co.jp/dw0pykma0000/?ak=EbE9h4iD4t8%2F7JyV1oJRuzhuPIXl67km3TCJ2iVsRdQ%3D",
+                "latitude": "35.652414",
+                "longitude": "139.545242"
+            }
+        };
+        $("#m1")
+            .css('display', 'none');
+        $("#result")
+            .css('display', 'block');
+        document.getElementById("name")
+            .innerText = onerr["data"]["name"];
+        document.getElementById("at")
+            .innerText = onerr["data"]["address"];
+        targetLat = onerr["data"]["latitude"];
+        targetLng = onerr["data"]["longitude"];
+        navigator.geolocation.getCurrentPosition(function(position) {
+                lat = position.coords.latitude;
+                lng = position.coords.longitude;
+                console.log("lat,lng", lat, lng);
+                console.log("target lat,lng", targetLat, targetLng);
+                document.getElementById("distance")
+                    .innerText = mLatLon.get(
                         mLatLon.getLatM(lat), mLatLon.getLonM(lng),
                         mLatLon.getLatM(targetLat), mLatLon.getLonM(targetLng)) + "m";
+            },
+            function() {
+                alert("Geolocation Error")
+            });
+        window.addEventListener('deviceorientation', function(event) {
+            direction = event.alpha; // event.alphaで方角の値を取得
+            //document.getElementById("connpas").innerText = aziCalc(lat, lng, targetLat, targetLng);
+            $("#ga")
+                .css("transform", "rotate(" + aziCalc(lat, lng, targetLat, targetLng) + "deg)");
+            aziCalc(lat, lng, targetLat, targetLng)
+            navigator.geolocation.getCurrentPosition(function(position) {
+                    lat = position.coords.latitude;
+                    lng = position.coords.longitude;
+                    document.getElementById("distance")
+                        .innerText = mLatLon.get(
+                            mLatLon.getLatM(lat), mLatLon.getLonM(lng),
+                            mLatLon.getLatM(targetLat), mLatLon.getLonM(targetLng)) + "m";
                 },
                 function() {
                     alert("Geolocation Error")
@@ -69,145 +128,170 @@ req.onreadystatechange = function() {
     }
 };
 
-$(document).ready(function() {
-    navigator.geolocation.getCurrentPosition(function(position) {
-            lat = position.coords.latitude;
-            lng = position.coords.longitude;
-            console.log("lat,lng", lat, lng);
-        },
-        function() {
-            alert("Geolocation Error")
-        });
-    navigator.getMedia = navigator.getUserMedia ||
-        navigator.webkitGetUserMedia ||
-        navigator.mozGetUserMedia ||
-        navigator.msGetUserMedia;
-    navigator.getMedia({
-        audio: true
-    }, function(stream) {
-        audioContext.destination.channelCount = 2;
-        var source = audioContext.createMediaStreamSource(stream);
-        var oscillator5000 = audioContext.createOscillator();
-        var oscillator10000 = audioContext.createOscillator();
-        var gainNode = audioContext.createGain();
-        var splitterR = audioContext.createChannelSplitter(2);
-        var splitterL = audioContext.createChannelSplitter(2);
-        var merger = audioContext.createChannelMerger(2);
-
-        oscillator5000.type = 'sine';
-        oscillator5000.frequency.value = 1000;
-        oscillator10000.type = 'sine';
-        oscillator10000.frequency.value = 5000;
-
-        gainNode.gain.value = 1;
-
-        oscillator5000.connect(splitterL);
-        oscillator10000.connect(splitterR);
-        splitterR.connect(merger, 0, 0);
-        splitterL.connect(merger, 0, 1);
-        merger.connect(gainNode);
-        //oscillator.connect(gainNode);
-        gainNode.connect(AnaliserNode);
-        AnaliserNode.connect(audioContext.destination);
-        source.connect(AnaliserNode2);
-        oscillator5000.start();
-        oscillator10000.start();
-    }, function(err) {});
-
-    $(".next").click(function(event) {
-        console.log("!!!");
-        $(this).parent("div").css('display', 'none');
-        $(this).parent().next().css('display', 'block');
-        if ($(this).parent().next().attr("id") === "m1") {
-            window.addEventListener('touchstart', function() {
-                if (touchNow == 0) { //event.preventDefault();
-                    touchNow = 1;
-                    console.log("start");
-                    //ホールドしたら方角を取り始める
-                    window.addEventListener('deviceorientation', function(event) {
-                        direction = event.alpha; // event.alphaで方角の値を取得
-                    });
-                    //ホールドしたらシェイクを検知する．
-                    window.addEventListener('devicemotion', function(event) { //デバイスが動いたときに発火
-                        acceleration_x = event.acceleration.x; // event.accelerationIncludingGravity.xで上下方向の加速度取得
-                        acceleration_y = event.acceleration.y; // event.accelerationIncludingGravity.yで左右方向の加速度取得
-                        acceleration_z = event.acceleration.z; // event.accelerationIncludingGravity.zで前後方向の加速度取得
-
-                        if (acceleration_x > 15 && shakeFlag_x != 1) { //シェイクしたときに実行
-                            shakeFlag_x = 1;
-                            shakeCount++;
-                            console.log("shake!! at ", acceleration_x, shakeCount);
-                        } else if (acceleration_x < -15 && shakeFlag_x != 0) { //シェイクして戻ったときの処理
-                            shakeFlag_x = 0
-                        }
-                    });
-                    window.addEventListener("touchend", function() {
-                        if (touchNow == 1) {
-                            touchNow = 0;
-                            //リリースした時
-                            console.log("POST!!!");
-                            console.log("方位角：", direction);
-                            if (shakeCount < 6) {
-                                //5降り以下ならリセット．
-                                //alert("冒険心が足りません！！");
-                                console.log('https://gnavi-rest-kinmemodoki.c9users.io/?' +
-                                    "latitude=" + lat + "&longitude=" + lng + "&distance=" + distance +
-                                    "&azimuth=" + direction + "&category=" + category);
-                                req.open('GET', url, true);
-                                req.send('');
-                                shakeCount = 0;
-                            } else {
-                                distance = shakeCount * 50;
-                                /*
-                                alert(shakeCount + ' https://gnavi-rest-kinmemodoki.c9users.io/?' +
-                                    "latitude=" + lat + "&longitude=" + lng + "&distance=" + distance +
-                                    "&azimuth=" + direction + "&category=" + category);*/
-                                if (shakeCount > 50) distance = 10000;
-                                //location.href = URL + '/result.html' + "?latitude=" + lat + "&longitude=" + lng + "&distance=" + distance + "&azimuth=" + direction + "&category=" + category;
-                                url = 'https://gnavi-rest-kinmemodoki.c9users.io/?' +
-                                    "latitude=" + lat + "&longitude=" + lng + "&distance=" + distance +
-                                    "&azimuth=" + direction + "&category=" + category;
-                                shakeCount = 0;
-                                req.open('GET', url, true);
-                                req.send('');
-                            }
-                        }
-                    });
-                }
-
+$(document)
+    .ready(function() {
+        navigator.geolocation.getCurrentPosition(function(position) {
+                lat = position.coords.latitude;
+                lng = position.coords.longitude;
+                console.log("lat,lng", lat, lng);
+            },
+            function() {
+                alert("Geolocation Error")
             });
+        navigator.getMedia = navigator.getUserMedia ||
+            navigator.webkitGetUserMedia ||
+            navigator.mozGetUserMedia ||
+            navigator.msGetUserMedia;
+        navigator.getMedia({
+            audio: true
+        }, function(stream) {
+            audioContext.destination.channelCount = 2;
+            var source = audioContext.createMediaStreamSource(stream);
+            var oscillator5000 = audioContext.createOscillator();
+            var oscillator10000 = audioContext.createOscillator();
+            var gainNode = audioContext.createGain();
+            var splitterR = audioContext.createChannelSplitter(2);
+            var splitterL = audioContext.createChannelSplitter(2);
+            var merger = audioContext.createChannelMerger(2);
 
-        }
+            oscillator5000.type = 'sine';
+            oscillator5000.frequency.value = 1000;
+            oscillator10000.type = 'sine';
+            oscillator10000.frequency.value = 5000;
+
+            gainNode.gain.value = 1;
+
+            oscillator5000.connect(splitterL);
+            oscillator10000.connect(splitterR);
+            splitterR.connect(merger, 0, 0);
+            splitterL.connect(merger, 0, 1);
+            merger.connect(gainNode);
+            //oscillator.connect(gainNode);
+            gainNode.connect(AnaliserNode);
+            AnaliserNode.connect(audioContext.destination);
+            source.connect(AnaliserNode2);
+            oscillator5000.start();
+            oscillator10000.start();
+        }, function(err) {});
+
+        $(".next")
+            .click(function(event) {
+                console.log("!!!");
+                $(this)
+                    .parent("div")
+                    .css('display', 'none');
+                $(this)
+                    .parent()
+                    .next()
+                    .css('display', 'block');
+                if ($(this)
+                    .parent()
+                    .next()
+                    .attr("id") === "m1") {
+                    window.addEventListener('touchstart', function() {
+                        if (touchNow == 0) { //event.preventDefault();
+                            touchNow = 1;
+                            console.log("start");
+                            //ホールドしたら方角を取り始める
+                            window.addEventListener('deviceorientation', function(event) {
+                                direction = event.alpha; // event.alphaで方角の値を取得
+                            });
+                            //ホールドしたらシェイクを検知する．
+                            window.addEventListener('devicemotion', function(event) { //デバイスが動いたときに発火
+                                acceleration_x = event.acceleration.x; // event.accelerationIncludingGravity.xで上下方向の加速度取得
+                                acceleration_y = event.acceleration.y; // event.accelerationIncludingGravity.yで左右方向の加速度取得
+                                acceleration_z = event.acceleration.z; // event.accelerationIncludingGravity.zで前後方向の加速度取得
+
+                                if (acceleration_x > 15 && shakeFlag_x != 1) { //シェイクしたときに実行
+                                    shakeFlag_x = 1;
+                                    shakeCount++;
+                                    console.log("shake!! at ", acceleration_x, shakeCount);
+                                } else if (acceleration_x < -15 && shakeFlag_x != 0) { //シェイクして戻ったときの処理
+                                    shakeFlag_x = 0
+                                }
+                            });
+                            window.addEventListener("touchend", function() {
+                                if (touchNow == 1) {
+                                    touchNow = 0;
+                                    //リリースした時
+                                    console.log("POST!!!");
+                                    console.log("方位角：", direction);
+                                    if (shakeCount < 6) {
+                                        //5降り以下ならリセット．
+                                        //alert("冒険心が足りません！！");
+                                        console.log('https://gnavi-rest-kinmemodoki.c9users.io/?' +
+                                            "latitude=" + lat + "&longitude=" + lng + "&distance=" + distance +
+                                            "&azimuth=" + direction + "&category=" + category);
+                                        req.open('GET', url, true);
+                                        req.send('');
+                                        shakeCount = 0;
+                                    } else {
+                                        distance = shakeCount * 50;
+                                        /*
+                                        alert(shakeCount + ' https://gnavi-rest-kinmemodoki.c9users.io/?' +
+                                            "latitude=" + lat + "&longitude=" + lng + "&distance=" + distance +
+                                            "&azimuth=" + direction + "&category=" + category);*/
+                                        if (shakeCount > 50) distance = 10000;
+                                        //location.href = URL + '/result.html' + "?latitude=" + lat + "&longitude=" + lng + "&distance=" + distance + "&azimuth=" + direction + "&category=" + category;
+                                        url = 'https://gnavi-rest-kinmemodoki.c9users.io/?' +
+                                            "latitude=" + lat + "&longitude=" + lng + "&distance=" + distance +
+                                            "&azimuth=" + direction + "&category=" + category;
+                                        shakeCount = 0;
+                                        req.open('GET', url, true);
+                                        req.send('');
+                                    }
+                                }
+                            });
+                        }
+
+                    });
+
+                }
+            });
+        anime();
     });
-    anime();
-});
 
 function anime() {
     AnaliserNode.getByteFrequencyData(frequency);
     AnaliserNode2.getByteFrequencyData(frequency2);
     if (frequency2[21] < 160 && frequency2[107] >= 160) {
         category = "ラーメン";
-        document.getElementById("module").innerText = "モジュール:" + "🍜";
-        document.getElementById("moji").innerText = "麺";
-        $("#moji").css("color", "#b90000");
-        $("body").css("background-color", "#d40000");
+        document.getElementById("module")
+            .innerText = "モジュール:" + "🍜";
+        document.getElementById("moji")
+            .innerText = "麺";
+        $("#moji")
+            .css("color", "#b90000");
+        $("body")
+            .css("background-color", "#d40000");
     } else if (frequency2[21] >= 160 && frequency2[107] <= 160) {
         category = "寿司";
-        $("body").css("background-color", "#0055d4");
-        document.getElementById("module").innerText = "モジュール:" + "🍣";
-        document.getElementById("moji").innerText = "鮨";
-        $("#moji").css("color", "#003e9a");
+        $("body")
+            .css("background-color", "#0055d4");
+        document.getElementById("module")
+            .innerText = "モジュール:" + "🍣";
+        document.getElementById("moji")
+            .innerText = "鮨";
+        $("#moji")
+            .css("color", "#003e9a");
     } else if (frequency2[21] >= 160 && frequency2[107] >= 160) {
         category = "居酒屋";
-        $("body").css("background-color", "#fcc900");
-        document.getElementById("module").innerText = "モジュール:" + "🍶";
-        document.getElementById("moji").innerText = "酒";
-        $("#moji").css("color", "#c9a000");
+        $("body")
+            .css("background-color", "#fcc900");
+        document.getElementById("module")
+            .innerText = "モジュール:" + "🍶";
+        document.getElementById("moji")
+            .innerText = "酒";
+        $("#moji")
+            .css("color", "#c9a000");
     } else {
         category = "";
-        $("body").css("background-color", "#a0a0a0");
-        document.getElementById("module").innerText = "モジュール:なし";
-        document.getElementById("moji").innerText = "";
+        $("body")
+            .css("background-color", "#a0a0a0");
+        document.getElementById("module")
+            .innerText = "モジュール:なし";
+        document.getElementById("moji")
+            .innerText = "";
     }
     window.requestAnimationFrame(anime);
 }
