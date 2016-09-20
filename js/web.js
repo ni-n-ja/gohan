@@ -29,7 +29,7 @@ var targetLng;
 var req = new XMLHttpRequest();
 req.responseType = 'text';
 //var url = 'http://hacku.kinmemodoki.net'
-var url = 'https://gnavi-rest-kinmemodoki.c9users.io/?_c9_id=livepreview0&_c9_host=https://ide.c9.io';
+var url = 'https://hacku.kinmemodoki.net/rest';
 req.onreadystatechange = function() {
     if (req.readyState === 4 && req.status === 200) {
         $("#m1")
@@ -219,7 +219,7 @@ $(document)
                                     if (shakeCount < 6) {
                                         //5降り以下ならリセット．
                                         //alert("冒険心が足りません！！");
-                                        console.log('https://gnavi-rest-kinmemodoki.c9users.io/?' +
+                                        console.log('https://hacku.kinmemodoki.net/rest?' +
                                             "latitude=" + lat + "&longitude=" + lng + "&distance=" + distance +
                                             "&azimuth=" + direction + "&category=" + category);
                                         req.open('GET', url, true);
@@ -233,7 +233,7 @@ $(document)
                                             "&azimuth=" + direction + "&category=" + category);*/
                                         if (shakeCount > 50) distance = 10000;
                                         //location.href = URL + '/result.html' + "?latitude=" + lat + "&longitude=" + lng + "&distance=" + distance + "&azimuth=" + direction + "&category=" + category;
-                                        url = 'https://gnavi-rest-kinmemodoki.c9users.io/?' +
+                                        url = 'https://hacku.kinmemodoki.net/rest?' +
                                             "latitude=" + lat + "&longitude=" + lng + "&distance=" + distance +
                                             "&azimuth=" + direction + "&category=" + category;
                                         shakeCount = 0;
