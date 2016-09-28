@@ -30,7 +30,7 @@ var req = new XMLHttpRequest();
 req.responseType = 'text';
 //var url = 'http://hacku.kinmemodoki.net'
 var url = 'https://hacku.kinmemodoki.net/rest';
-req.onreadystatechange = function() {
+req.onreadystatechange = function () {
     if (req.readyState === 4 && req.status === 200) {
         $("#m1")
             .css('display', 'none');
@@ -42,38 +42,38 @@ req.onreadystatechange = function() {
             .innerText = JSON.parse(req.response)["data"]["address"];
         targetLat = JSON.parse(req.response)["data"]["latitude"];
         targetLng = JSON.parse(req.response)["data"]["longitude"];
-        navigator.geolocation.getCurrentPosition(function(position) {
-                lat = position.coords.latitude;
-                lng = position.coords.longitude;
-                console.log("lat,lng", lat, lng);
-                console.log("target lat,lng", targetLat, targetLng);
-                document.getElementById("distance")
-                    .innerText = mLatLon.get(
-                        mLatLon.getLatM(lat), mLatLon.getLonM(lng),
-                        mLatLon.getLatM(targetLat), mLatLon.getLonM(targetLng)) + "m";
-            },
-            function() {
+        navigator.geolocation.getCurrentPosition(function (position) {
+            lat = position.coords.latitude;
+            lng = position.coords.longitude;
+            console.log("lat,lng", lat, lng);
+            console.log("target lat,lng", targetLat, targetLng);
+            document.getElementById("distance")
+                .innerText = mLatLon.get(
+                    mLatLon.getLatM(lat), mLatLon.getLonM(lng),
+                    mLatLon.getLatM(targetLat), mLatLon.getLonM(targetLng)) + "m";
+        },
+            function () {
                 alert("Geolocation Error")
             });
-        window.addEventListener('deviceorientation', function(event) {
+        window.addEventListener('deviceorientation', function (event) {
             direction = event.alpha; // event.alphaで方角の値を取得
             //document.getElementById("connpas").innerText = aziCalc(lat, lng, targetLat, targetLng);
             $("#ga")
                 .css("transform", "rotate(" + aziCalc(lat, lng, targetLat, targetLng) + "deg)");
             aziCalc(lat, lng, targetLat, targetLng)
-            navigator.geolocation.getCurrentPosition(function(position) {
-                    lat = position.coords.latitude;
-                    lng = position.coords.longitude;
-                    document.getElementById("distance")
-                        .innerText = mLatLon.get(
-                            mLatLon.getLatM(lat), mLatLon.getLonM(lng),
-                            mLatLon.getLatM(targetLat), mLatLon.getLonM(targetLng)) + "m";
-                },
-                function() {
+            navigator.geolocation.getCurrentPosition(function (position) {
+                lat = position.coords.latitude;
+                lng = position.coords.longitude;
+                document.getElementById("distance")
+                    .innerText = mLatLon.get(
+                        mLatLon.getLatM(lat), mLatLon.getLonM(lng),
+                        mLatLon.getLatM(targetLat), mLatLon.getLonM(targetLng)) + "m";
+            },
+                function () {
                     alert("Geolocation Error")
                 });
         });
-    } else {
+    } else if (req.status == 404) {
         var onerr = {
             "errorCode": 0,
             "data": {
@@ -94,34 +94,34 @@ req.onreadystatechange = function() {
             .innerText = onerr["data"]["address"];
         targetLat = onerr["data"]["latitude"];
         targetLng = onerr["data"]["longitude"];
-        navigator.geolocation.getCurrentPosition(function(position) {
-                lat = position.coords.latitude;
-                lng = position.coords.longitude;
-                console.log("lat,lng", lat, lng);
-                console.log("target lat,lng", targetLat, targetLng);
-                document.getElementById("distance")
-                    .innerText = mLatLon.get(
-                        mLatLon.getLatM(lat), mLatLon.getLonM(lng),
-                        mLatLon.getLatM(targetLat), mLatLon.getLonM(targetLng)) + "m";
-            },
-            function() {
+        navigator.geolocation.getCurrentPosition(function (position) {
+            lat = position.coords.latitude;
+            lng = position.coords.longitude;
+            console.log("lat,lng", lat, lng);
+            console.log("target lat,lng", targetLat, targetLng);
+            document.getElementById("distance")
+                .innerText = mLatLon.get(
+                    mLatLon.getLatM(lat), mLatLon.getLonM(lng),
+                    mLatLon.getLatM(targetLat), mLatLon.getLonM(targetLng)) + "m";
+        },
+            function () {
                 alert("Geolocation Error")
             });
-        window.addEventListener('deviceorientation', function(event) {
+        window.addEventListener('deviceorientation', function (event) {
             direction = event.alpha; // event.alphaで方角の値を取得
             //document.getElementById("connpas").innerText = aziCalc(lat, lng, targetLat, targetLng);
             $("#ga")
                 .css("transform", "rotate(" + aziCalc(lat, lng, targetLat, targetLng) + "deg)");
             aziCalc(lat, lng, targetLat, targetLng)
-            navigator.geolocation.getCurrentPosition(function(position) {
-                    lat = position.coords.latitude;
-                    lng = position.coords.longitude;
-                    document.getElementById("distance")
-                        .innerText = mLatLon.get(
-                            mLatLon.getLatM(lat), mLatLon.getLonM(lng),
-                            mLatLon.getLatM(targetLat), mLatLon.getLonM(targetLng)) + "m";
-                },
-                function() {
+            navigator.geolocation.getCurrentPosition(function (position) {
+                lat = position.coords.latitude;
+                lng = position.coords.longitude;
+                document.getElementById("distance")
+                    .innerText = mLatLon.get(
+                        mLatLon.getLatM(lat), mLatLon.getLonM(lng),
+                        mLatLon.getLatM(targetLat), mLatLon.getLonM(targetLng)) + "m";
+            },
+                function () {
                     alert("Geolocation Error")
                 });
         });
@@ -129,13 +129,13 @@ req.onreadystatechange = function() {
 };
 
 $(document)
-    .ready(function() {
-        navigator.geolocation.getCurrentPosition(function(position) {
-                lat = position.coords.latitude;
-                lng = position.coords.longitude;
-                console.log("lat,lng", lat, lng);
-            },
-            function() {
+    .ready(function () {
+        navigator.geolocation.getCurrentPosition(function (position) {
+            lat = position.coords.latitude;
+            lng = position.coords.longitude;
+            console.log("lat,lng", lat, lng);
+        },
+            function () {
                 alert("Geolocation Error")
             });
         navigator.getMedia = navigator.getUserMedia ||
@@ -144,7 +144,7 @@ $(document)
             navigator.msGetUserMedia;
         navigator.getMedia({
             audio: true
-        }, function(stream) {
+        }, function (stream) {
             audioContext.destination.channelCount = 2;
             var source = audioContext.createMediaStreamSource(stream);
             var oscillator5000 = audioContext.createOscillator();
@@ -172,10 +172,10 @@ $(document)
             source.connect(AnaliserNode2);
             oscillator5000.start();
             oscillator10000.start();
-        }, function(err) {});
+        }, function (err) { });
 
         $(".next")
-            .click(function(event) {
+            .click(function (event) {
                 console.log("!!!");
                 $(this)
                     .parent("div")
@@ -188,16 +188,16 @@ $(document)
                     .parent()
                     .next()
                     .attr("id") === "m1") {
-                    window.addEventListener('touchstart', function() {
+                    window.addEventListener('touchstart', function () {
                         if (touchNow == 0) { //event.preventDefault();
                             touchNow = 1;
                             console.log("start");
                             //ホールドしたら方角を取り始める
-                            window.addEventListener('deviceorientation', function(event) {
+                            window.addEventListener('deviceorientation', function (event) {
                                 direction = event.alpha; // event.alphaで方角の値を取得
                             });
                             //ホールドしたらシェイクを検知する．
-                            window.addEventListener('devicemotion', function(event) { //デバイスが動いたときに発火
+                            window.addEventListener('devicemotion', function (event) { //デバイスが動いたときに発火
                                 acceleration_x = event.acceleration.x; // event.accelerationIncludingGravity.xで上下方向の加速度取得
                                 acceleration_y = event.acceleration.y; // event.accelerationIncludingGravity.yで左右方向の加速度取得
                                 acceleration_z = event.acceleration.z; // event.accelerationIncludingGravity.zで前後方向の加速度取得
@@ -210,7 +210,7 @@ $(document)
                                     shakeFlag_x = 0
                                 }
                             });
-                            window.addEventListener("touchend", function() {
+                            window.addEventListener("touchend", function () {
                                 if (touchNow == 1) {
                                     touchNow = 0;
                                     //リリースした時
@@ -313,7 +313,7 @@ function aziCalc(userLat, userLng, shopLat, shopLng) {
     return -geoDirection(userLat, userLng, shopLat, shopLng) + direction;
 }
 
-(function() {
+(function () {
 
     // 基本定義.
     var _u = undefined;
@@ -333,7 +333,7 @@ function aziCalc(userLat, userLng, shopLat, shopLng) {
      * @param lat 緯度を設定します.
      * @return int メートル単位に計算された情報が返却されます.
      */
-    var _getLatM = function(lat) {
+    var _getLatM = function (lat) {
         return (lat / _latitudeM) | 0;
     }
 
@@ -342,7 +342,7 @@ function aziCalc(userLat, userLng, shopLat, shopLng) {
      * @param lon 経度を設定します.
      * @return int メートル単位に計算された情報が返却されます.
      */
-    var _getLonM = function(lon) {
+    var _getLonM = function (lon) {
         return (lon / _longitudeM) | 0;
     }
 
@@ -356,7 +356,7 @@ function aziCalc(userLat, userLng, shopLat, shopLng) {
      * @param by 対象位置の経度(メートル変換されたもの)を設定します.
      * @return 大まかな直線距離が返却されます.
      */
-    var _get = function(ax, ay, bx, by) {
+    var _get = function (ax, ay, bx, by) {
         ax = ax | 0;
         ay = ay | 0;
         bx = bx | 0;
@@ -381,7 +381,7 @@ function aziCalc(userLat, userLng, shopLat, shopLng) {
      * @param by 対象位置の経度を設定します.
      * @return 大まかな直線距離が返却されます.
      */
-    var _getF = function(ax, ay, bx, by) {
+    var _getF = function (ax, ay, bx, by) {
         return _get(
             _getLatM(ax), _getLonM(ay),
             _getLatM(bx), _getLonM(by)
